@@ -3,8 +3,10 @@
  <form method='POST' action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group"> 
-   <h1>Log In</h1>
-   <div class="form-group">
+   <h1>Register</h1>
+
+    <!-- EMAIL -->
+    <div class="form-group">
     {{ form.email.label(class="form-control-label")}}
     {% if form.email.errors %}
      {{ form.email(class="form-control form-control-lg is-invalid") }}
@@ -17,6 +19,8 @@
      {{ form.email(class="form-control form-control-lg")}}
     {% endif %}
    </div>
+
+    <!-- PASSWORD -->
    <div class="form-group">
     {{ form.password.label(class="form-control-label")}}
     {% if form.password.errors %}
@@ -30,6 +34,40 @@
      {{ form.password(class="form-control form-control-lg")}}
     {% endif %}
    </div>
+
+    <!-- NAME -->
+    <div class="form-group">
+        {{ form.name.label(class="form-control-label")}}
+        {% if form.name.errors %}
+         {{ form.name(class="form-control form-control-lg is-invalid") }}
+         <div class="invalid-feedback">
+          {% for error in form.name.errors %}
+           <span>{{ error }}</span>
+          {% endfor %}
+         </div>
+        {% else %}  
+         {{ form.name(class="form-control form-control-lg")}}
+        {% endif %}
+    </div>
+
+    <!-- ROLE ID -->
+    <div class="form-group">
+        {{ form.role_id.label(class="form-control-label")}}
+        
+        {% if form.role_id.errors %}
+         {{ form.role_id(class="form-control form-control-lg is-invalid") }}
+         <div class="invalid-feedback">
+          {% for error in form.role_id.errors %}
+           <span>{{ error }}</span>
+          {% endfor %}
+         </div>
+
+        {% else %}  
+         {{ form.role_id(class="form-control form-control-lg")}}
+        {% endif %}
+    </div>
+
+    <!-- REMEMBER -->
    <div class="form-group">
     {{ form.remember(class="form-check-input") }} 
     {{ form.remember.label(class="form-check-label") }}
@@ -38,8 +76,6 @@
   <div class="form-group">
    {{ form.submit(class="btn btn-outline-info")}}
   </div>
-  
-  <!-- <a href="javascript:void(0)" onclick="location.href='/reset'">Forgot Password?</a> -->
  </form>
- <h6>Create an Account <a href="javascript:void(0)" onclick="location.href='/register'">Sign Up Now</a></h6>
+ <h6>Already have an Account <a href="javascript:void(0)" onclick="location.href='/login'">Log In Here</a></h6>
 {% endblock info %}
