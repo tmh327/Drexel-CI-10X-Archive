@@ -26,6 +26,9 @@ CREATE TABLE projects (
     lab_number integer,
     project_name text,
     project_description text,
+    user_id integer NOT NULL,
+    CONSTRAINT project_students FOREIGN KEY (user_id)
+    REFERENCES users (user_id),
     CONSTRAINT Project_Name UNIQUE (academic_year, lab_number, project_name)
 );
 

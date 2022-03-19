@@ -1,0 +1,11 @@
+{% extends 'student_home.html' %}
+
+{% block content %}
+    <h1>{% block title %} {{project[3]}} {% endblock %}</h1>
+        <div class='message'>
+            <p>Academic Year: {{ project[1] }}</p>
+            <p>Lab Number: {{ project[2] }}</p>
+            <p>Project Name: {{ project[3] }}</p>
+            <p>Project Description: {{ project[4] }}</p>
+        </div>
+{% endblock %}

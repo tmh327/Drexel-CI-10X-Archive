@@ -1,0 +1,10 @@
+{% extends 'student_home.html' %}
+
+{% block content %}
+    <h1>{% block title %} {{Profile}} {% endblock %}</h1>
+    <h3>Name: {{ user.name }}</h3>
+    <h3>Email: {{ user.email }}</h3>
+    {% if user == current_user %}
+    <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+    {% endif %}
+{% endblock %}
