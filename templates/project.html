@@ -1,11 +1,12 @@
 {% extends 'student_home.html' %}
 
 {% block content %}
-    <h1>{% block title %} {{project[3]}} {% endblock %}</h1>
+    <h1>{% block title %} {{project.project_name }} {% endblock %}</h1>
         <div class='message'>
-            <p>Academic Year: {{ project[1] }}</p>
-            <p>Lab Number: {{ project[2] }}</p>
-            <p>Project Name: {{ project[3] }}</p>
-            <p>Project Description: {{ project[4] }}</p>
+            <p>Academic Year: {{ project.academic_year }}</p>
+            <p>Lab Number: {{ project.lab_number }}</p>
+            <p>Project Name: {{ project.project_name }}</p>
+            <p>Project Description: {{ project.project_description }}</p>
+            <p>Project Owner: {{ project.project_owner }}</p>
         </div>
 {% endblock %}

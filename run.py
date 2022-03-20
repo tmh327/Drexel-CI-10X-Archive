@@ -1,8 +1,6 @@
 from flask import Flask, render_template, url_for, flash, request, redirect, Response, session
 import sqlite3
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-from matplotlib import projections
-from numpy import true_divide
 from forms import LoginForm, ProjectForm, RegisterForm, ProfileForm
 
 app = Flask(__name__, static_folder='public', static_url_path='')
@@ -28,7 +26,21 @@ class User(UserMixin):
          return True
     def get_id(self):
          return self.id
-
+         
+class Project:
+     def __init__(self, project_id, academic_year, lab_number, project_name, project_description, user_id):
+          self.project_id = project_id
+          self.academic_year = academic_year
+          self.lab_number = lab_number
+          self.project_name = project_name
+          self.project_description = project_description
+          self.project_owner = self.find_owner(user_id)
+     def find_owner(self, user_id):
+          conn = sqlite3.connect('ci_archive.db')
+          curs = conn.cursor()
+          curs.execute("SELECT name from users where user_id = (?)",[user_id])
+          lu = curs.fetchone()
+          return lu[0]
 @login_manager.user_loader
 def load_user(user_id):
    conn = sqlite3.connect('ci_archive.db')
@@ -87,16 +99,22 @@ def register():
 def profile():
      return render_template('profile.html', user=current_user, title='Profile')
 
-@app.route('/edit_profile')
+@app.route('/edit_profile', methods=['GET','POST'])
 @login_required
 def edit_profile():
      form = ProfileForm()
      if form.validate_on_submit():
-          pass
+          conn = sqlite3.connect('ci_archive.db')
+          curs = conn.cursor()
+          current_user.name = form.name.data
+          current_user.email = form.email.data
+          curs.execute("UPDATE users SET name = ?, email = ? WHERE user_id = ?",    [form.name.data, form.email.data, current_user.id])
+          curs.connection.commit()
+          flash('You have successfully updated your profile!')
+          return redirect(url_for('profile'))
      elif request.method == 'GET':
-        form.name.data = current_user.name
-        form.email.data = current_user.email
-        form.password.data = current_user.password
+          form.name.data = current_user.name
+          form.email.data = current_user.email
      return render_template('edit_profile.html', user=current_user, title='Edit Profile', form=form)
 
 @app.route('/home')
@@ -121,20 +139,29 @@ def main():
      else:
           return render_template('index.html', title='DREXEL CI10X ARCHIVE')
 @app.route('/project/<int:id>', methods=('GET', 'POST'))
+@login_required
 def project(id):
      conn = sqlite3.connect('ci_archive.db')
      curs = conn.cursor()
-     curs.execute("SELECT project_id, academic_year, lab_number, project_name, project_description FROM projects where project_id = (?)",[id])
-     project = curs.fetchone()
+     curs.execute("SELECT * FROM projects where project_id = (?)",[id])
+     sql_project = curs.fetchone()
+     if sql_project is None:
+          return None
+     else:
+          project = Project(sql_project[0], sql_project[1], sql_project[2], sql_project[3], sql_project[4], sql_project[5])
      return render_template('project.html', project=project)
 
 @app.route('/projects')
+@login_required
 def projects():
      conn = sqlite3.connect('ci_archive.db')
      curs = conn.cursor()
      curs.execute("SELECT * FROM projects")
      #curs.execute("SELECT academic_year, lab_number, project_name, project_description FROM projects")
-     projects = list(curs.fetchall())
+     sql_projects = list(curs.fetchall())
+     projects = []
+     for sql_project in sql_projects:
+          projects.append(Project(sql_project[0], sql_project[1], sql_project[2], sql_project[3], sql_project[4], sql_project[5]))
      return render_template('projects.html', projects=projects)
 
 @app.route('/create/', methods=('GET', 'POST'))

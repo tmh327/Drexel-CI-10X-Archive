@@ -23,7 +23,6 @@ class RegisterForm(FlaskForm):
   role_lists = curs.fetchall()
 
   email = StringField('Email',validators=[DataRequired(),Email()])
-  password = PasswordField('Password',validators=[DataRequired(), Length(min=8, max=20)])
   name = StringField('Name',validators=[DataRequired()])
   role_id = SelectField('Role', choices=role_lists)
   remember = BooleanField('Remember Me')
@@ -56,5 +55,4 @@ class ProjectForm(FlaskForm):
 class ProfileForm(FlaskForm):
   name = StringField('Name', validators= [DataRequired()])
   email = StringField('Email',validators=[DataRequired(),Email()])
-  password = PasswordField('Password',validators=[DataRequired(), Length(min=8, max=20)])
   submit = SubmitField('Save')

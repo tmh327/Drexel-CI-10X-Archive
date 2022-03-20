@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{% block title %} {{Edit}} {% endblock %}</h1>
-    <form action="" method="post">
+    <form action="" method="POST">
         {{ form.hidden_tag() }}
         <p>
             {{ form.name.label }}<br>
@@ -15,13 +15,6 @@
             {{ form.email.label }}<br>
             {{ form.email(cols=50, rows=4) }}<br>
             {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(cols=50, rows=4) }}<br>
-            {% for error in form.password.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
