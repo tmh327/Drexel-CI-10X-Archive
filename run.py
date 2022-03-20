@@ -5,15 +5,9 @@ from matplotlib import projections
 from numpy import true_divide
 from forms import LoginForm, ProjectForm, RegisterForm, ProfileForm
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public', static_url_path='')
 app.config['SECRET_KEY'] = 'TrangHoang'
 app.debug=True
-
-messages = [{'title': 'Message One',
-             'content': 'Message One Content'},
-            {'title': 'Message Two',
-             'content': 'Message Two Content'}
-            ]
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
