@@ -2,11 +2,75 @@
 
 {% block content %}
     <h1>{% block title %} {{project.project_name }} {% endblock %}</h1>
-        <div class='message'>
-            <p>Academic Year: {{ project.academic_year }}</p>
-            <p>Lab Number: {{ project.lab_number }}</p>
-            <p>Project Name: {{ project.project_name }}</p>
-            <p>Project Description: {{ project.project_description }}</p>
-            <p>Project Owner: {{ project.project_owner }}</p>
-        </div>
+        <form method='POST' action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">       
+              <!-- Academic Year -->
+              <div class="form-group">
+              {{ form.academic_year.label(class="form-control-label")}}
+              {% if form.academic_year.errors %}
+               {{ form.academic_year(class="form-control form-control-lg is-invalid") }}
+               <div class="invalid-feedback">
+                {% for error in form.academic_year.errors %}
+                 <span>{{ error }}</span>
+                {% endfor %}
+               </div>
+              {% else %}  
+               {{ form.academic_year(class="form-control form-control-lg")}}
+              {% endif %}
+             </div>
+          
+              <!-- Lab Number  -->
+             <div class="form-group">
+              {{ form.lab_number.label(class="form-control-label")}}
+              {% if form.lab_number.errors %}
+               {{ form.lab_number(class="form-control form-control-lg is-invalid") }}
+               <div class="invalid-feedback">
+                {% for error in form.lab_number.errors %}
+                 <span>{{ error }}</span>
+                {% endfor %}
+               </div>
+              {% else %}
+               {{ form.lab_number(class="form-control form-control-lg")}}
+              {% endif %}
+             </div>
+          
+              <!-- Project Name -->
+              <div class="form-group">
+                  {{ form.project_name.label(class="form-control-label")}}
+                  {% if form.project_name.errors %}
+                   {{ form.project_name(class="form-control form-control-lg is-invalid") }}
+                   <div class="invalid-feedback">
+                    {% for error in form.project_name.errors %}
+                     <span>{{ error }}</span>
+                    {% endfor %}
+                   </div>
+                  {% else %}  
+                   {{ form.project_name(class="form-control form-control-lg")}}
+                  {% endif %}
+              </div>
+          
+              <!-- Project Description -->
+              <div class="form-group">
+                  {{ form.project_description.label(class="form-control-label")}}
+                  
+                  {% if form.project_description.errors %}
+                   {{ form.project_description(class="form-control form-control-lg is-invalid") }}
+                   <div class="invalid-feedback">
+                    {% for error in form.project_description.errors %}
+                     <span>{{ error }}</span>
+                    {% endfor %}
+                   </div>
+          
+                  {% else %}  
+                   {{ form.project_description(class="form-control form-control-lg")}}
+                  {% endif %}
+              </div>
+          
+            </fieldset>
+            <div class="form-group">
+             {{ form.submit(class="btn btn-outline-info")}}
+            </div>
+            
+        </form>
 {% endblock %}

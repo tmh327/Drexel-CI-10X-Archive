@@ -24,7 +24,6 @@ class RegisterForm(FlaskForm):
 
   email = StringField('Email',validators=[DataRequired(),Email()])
   name = StringField('Name',validators=[DataRequired()])
-  password = PasswordField('Password',validators=[DataRequired(), Length(min=8, max=20)])
   role_id = SelectField('Role', choices=role_lists)
   remember = BooleanField('Remember Me')
   submit = SubmitField('Register')

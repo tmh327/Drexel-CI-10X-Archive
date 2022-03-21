@@ -138,34 +138,18 @@ def main():
           return render_template('index.html', title='DREXEL CI10X ARCHIVE', projects=projects)
      else:
           return render_template('index.html', title='DREXEL CI10X ARCHIVE')
-
-@app.route('/project/<int:id>', methods=['GET', 'POST'])
+@app.route('/project/<int:id>', methods=('GET', 'POST'))
 @login_required
 def project(id):
-     form = ProjectForm()
-     if form.validate_on_submit():
-          conn = sqlite3.connect('ci_archive.db')
-          curs = conn.cursor()
-          curs.execute("UPDATE projects SET academic_year=?, lab_number=?, project_name=?, project_description=? WHERE project_id = ?",    [form.academic_year.data, form.lab_number.data, form.project_name.data, form.project_description.data, id])
-          curs.connection.commit()
-          flash('You have successfully updated your project!')
-          return redirect(url_for('project', id=id))
-
-     elif request.method == 'GET':
-          conn = sqlite3.connect('ci_archive.db')
-          curs = conn.cursor()
-          curs.execute("SELECT * FROM projects where project_id = (?)",[id])
-          sql_project = curs.fetchone()
-          if sql_project is None:
-               flash('Cannot find this project')
-               return None
-          else:
-               project = Project(sql_project[0], sql_project[1], sql_project[2], sql_project[3], sql_project[4], sql_project[5])
-          form.academic_year.data = project.academic_year
-          form.lab_number.data = project.lab_number
-          form.project_name.data = project.project_name
-          form.project_description.data = project.project_description
-     return render_template('project.html', project=project, form=form)
+     conn = sqlite3.connect('ci_archive.db')
+     curs = conn.cursor()
+     curs.execute("SELECT * FROM projects where project_id = (?)",[id])
+     sql_project = curs.fetchone()
+     if sql_project is None:
+          return None
+     else:
+          project = Project(sql_project[0], sql_project[1], sql_project[2], sql_project[3], sql_project[4], sql_project[5])
+     return render_template('project.html', project=project)
 
 @app.route('/projects')
 @login_required
@@ -180,7 +164,7 @@ def projects():
           projects.append(Project(sql_project[0], sql_project[1], sql_project[2], sql_project[3], sql_project[4], sql_project[5]))
      return render_template('projects.html', projects=projects)
 
-@app.route('/create/', methods=['GET', 'POST'])
+@app.route('/create/', methods=('GET', 'POST'))
 @login_required
 def create():
      form = ProjectForm()
